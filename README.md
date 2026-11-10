@@ -36,12 +36,6 @@ npx serve .
 python -m http.server 8000
 ```
 
-## Publicar en GitHub Pages
-
-1. Sube el repo a GitHub.
-2. *Settings → Pages → Build and deployment → Deploy from a branch*, rama `main`, carpeta `/ (root)`.
-3. No hay nada que compilar: se publica tal cual.
-
 ## Pruebas
 
 Lógica pura (generadores, tokenizador, tecleo, puntero, preferencias, rotación, scheduler, wake lock) con el test runner de Node, sin dependencias. Requiere Node 22 o superior:
