@@ -1,6 +1,7 @@
 import { createRng } from './core/rng.js';
 import { loadSettings, saveSettings, SCENES } from './core/settings.js';
 import { createWakeLock } from './core/wakeLock.js';
+import { planDockChange } from './core/dockActions.js';
 import { PROJECTS, BRANCHES } from './content/vocab.js';
 import { createIde } from './ui/ide.js';
 import { createFakeCursor } from './ui/fakeCursor.js';
@@ -41,23 +42,26 @@ const director = createDirector({
   identity,
   speed,
   getRotation: () => state.rotateMinutes,
-  onSceneChange: (scene) => dock?.setScene(scene),
+  onSceneChange: (scene) => {
+    // keep the dock's view of "current scene" in sync after a rotation
+    state.scene = scene;
+    dock?.setScene(scene);
+  },
 });
 
 dock = createDock(document.getElementById('dock-root'), {
   settings: state,
   wakeLock,
   onChange(next) {
-    const prev = { ...state };
+    const plan = planDockChange(state, next, director.current());
     Object.assign(state, next);
     saveSettings(state);
-    if (next.editor !== prev.editor) {
-      ide.setSkin(next.editor);
-      setTabIdentity(next.editor, lastFile, project);
-      director.start(director.current()); // scenes lay out per editor, so restart the current one
+    if (plan.skin) {
+      ide.setSkin(plan.skin);
+      setTabIdentity(plan.skin, lastFile, project);
     }
-    if (next.scene !== prev.scene) director.start(next.scene);
-    if (next.rotateMinutes !== prev.rotateMinutes) director.setRotation();
+    if (plan.startScene) director.start(plan.startScene);
+    else if (plan.reschedule) director.setRotation();
   },
 });
 

@@ -73,6 +73,20 @@ test('no burst after a hidden period', () => {
   assert.ok(count - before <= 2, `burst of ${count - before}`);
 });
 
+test('a cancelled scheduler ignores work queued afterwards', async () => {
+  const ft = fakeTimers();
+  const s = createScheduler(ft);
+  s.cancelAll();
+  let ran = false;
+  let resolved = false;
+  s.after(10, () => { ran = true; });
+  s.sleep(10).then(() => { resolved = true; });
+  ft.advance(100);
+  await Promise.resolve();
+  assert.equal(ran, false);
+  assert.equal(resolved, false);
+});
+
 test('sleep resolves and is cancelled by cancelAll', async () => {
   const ft = fakeTimers();
   const s = createScheduler(ft);

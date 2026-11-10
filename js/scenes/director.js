@@ -29,6 +29,9 @@ export function createDirector({ ide, rng, cursor, project, branch, identity, ge
   function start(scene) {
     const next = SCENES.includes(scene) ? scene : 'code';
     scheduler?.cancelAll();
+    // a scene cut mid-command would leave a second blinking caret behind
+    ide.panel.endPrompt();
+    ide.editor.setTyping(false);
     scheduler = makeScheduler();
     current = next;
     const ctx = {
@@ -45,8 +48,14 @@ export function createDirector({ ide, rng, cursor, project, branch, identity, ge
     onSceneChange?.(next);
   }
 
+  function stop() {
+    scheduler?.cancelAll();
+    clearTimeout(rotateTimer);
+  }
+
   return {
     start,
+    stop,
     setRotation: () => scheduleRotation(),
     current: () => current,
   };

@@ -5,8 +5,12 @@ export function createScheduler(timers = {}) {
   const set = timers.setTimeout ?? globalThis.setTimeout.bind(globalThis);
   const clear = timers.clearTimeout ?? globalThis.clearTimeout.bind(globalThis);
   const ids = new Set();
+  // once cancelled, the scheduler stays dead: a scene that wakes up from a pointer
+  // move (not driven by this scheduler) must not be able to queue more work
+  let cancelled = false;
 
   function after(ms, fn) {
+    if (cancelled) return null;
     const id = set(() => {
       ids.delete(id);
       fn();
@@ -16,6 +20,7 @@ export function createScheduler(timers = {}) {
   }
 
   function cancelAll() {
+    cancelled = true;
     for (const id of ids) clear(id);
     ids.clear();
   }
