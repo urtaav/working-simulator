@@ -1,0 +1,25 @@
+/* IntelliJ IDEA new UI, Dark theme */
+.ide--intellij {
+  --titlebar-h: 40px; --status-h: 24px; --activity-w: 40px; --sidebar-w: 280px; --tabs-h: 36px; --crumbs-h: 0px; --panel-h: 34%;
+  --bg: #1e1f22; --fg: #dfe1e5; --muted: #8c8f94; --line: #393b40; --selection: #2e436e; --accent: #3574f0;
+  --titlebar-bg: #2b2d30; --titlebar-fg: #dfe1e5; --activity-bg: #2b2d30; --activity-fg: #a8adbd; --activity-active: #ffffff;
+  --sidebar-bg: #2b2d30; --tabs-bg: #1e1f22; --panel-bg: #2b2d30; --status-bg: #2b2d30; --status-fg: #a8adbd;
+  --current-line: #26282e; --gutter: #4b5059; --gutter-active: #a1a3ab; --caret: #ced0d6; --tab-accent-pos: -2px;
+  --code-size: 14px; --code-lh: 20px; --com-style: italic;
+  --tk-plain: #bcbec4; --tk-kw: #cf8e6d; --tk-type: #bcbec4; --tk-str: #6aab73; --tk-num: #2aacb8; --tk-com: #7a7e85;
+  --tk-ann: #b3ae60; --tk-fn: #56a8f5; --tk-tag: #d5b778; --tk-attr: #bababa; --tk-punc: #bcbec4;
+  --term-fg: #bcbec4; --term-ps: #5fb865; --term-cmd: #dfe1e5; --term-ok: #5fb865; --term-warn: #e0bb65;
+}
+/* keep the element in the grid (row is 0px) so the editor stays in its own row */
+.ide--intellij .ide-crumbs { visibility: hidden; padding: 0; }
+.ide--intellij .tb-burger { font-size: 18px; padding: 0 6px; color: #a8adbd; }
+.ide--intellij .tb-widget { padding: 4px 8px; border-radius: 4px; font-weight: 600; font-size: 13px; }
+.ide--intellij .tb-icon { width: 28px; text-align: center; color: #a8adbd; }
+.ide--intellij .tb-run { color: #5fb865; }
+.ide--intellij .tb-debug { color: #5fb865; }
+.ide--intellij .ide-activity { border-right: 1px solid var(--line); }
+.ide--intellij .act-item.is-active { background: #3574f0; border-radius: 6px; width: 30px; height: 30px; margin: 4px 0; }
+.ide--intellij .tab { border-right: none; }
+.ide--intellij .ed-num { width: 56px; padding-right: 26px; }
+.ide--intellij .panel-tabs { font-size: 13px; gap: 14px; }
+.ide--intellij .ptab.is-active { font-weight: 600; box-shadow: none; }

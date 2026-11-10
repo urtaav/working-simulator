@@ -1,0 +1,90 @@
+/* Layout shared by both skins. Colors live in vscode.css / intellij.css. */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #1e1e1e; }
+/* the real pointer is hidden; a fake one moves on its own (see fakeCursor.js) */
+html.fake-pointer, html.fake-pointer * { cursor: none !important; }
+body { font: 13px/1.4 "Segoe UI", system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; user-select: none; }
+#app { height: 100%; }
+
+.ide { display: grid; grid-template-rows: var(--titlebar-h) 1fr var(--status-h); height: 100%; color: var(--fg); background: var(--bg); }
+
+.ide-titlebar { display: flex; align-items: center; gap: 8px; padding: 0 0 0 10px; background: var(--titlebar-bg); color: var(--titlebar-fg); font-size: 13px; white-space: nowrap; overflow: hidden; }
+.tb-menus { display: flex; gap: 2px; }
+.tb-menu { padding: 3px 7px; border-radius: 4px; }
+.tb-center { flex: 1; display: flex; justify-content: center; }
+.tb-spacer { flex: 1; }
+.tb-left, .tb-right { display: flex; align-items: center; gap: 6px; }
+.tb-window { display: flex; height: 100%; margin-left: 8px; }
+.tb-window span { width: 46px; display: grid; place-items: center; font-size: 12px; opacity: .8; }
+
+.ide-body { display: grid; grid-template-columns: var(--activity-w) var(--sidebar-w) 1fr; min-height: 0; }
+.ide-activity { display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; background: var(--activity-bg); color: var(--activity-fg); }
+.act-item { width: 100%; height: 44px; display: grid; place-items: center; }
+.act-item svg { width: 24px; height: 24px; }
+.act-item.is-active { color: var(--activity-active); }
+
+.ide-sidebar { display: flex; flex-direction: column; min-width: 0; background: var(--sidebar-bg); border-right: 1px solid var(--line); overflow: hidden; }
+.side-title { padding: 10px 14px 6px; font-size: 11px; letter-spacing: .04em; color: var(--muted); }
+.tree { overflow: hidden; }
+.tree-row { display: flex; align-items: center; gap: 5px; height: 22px; white-space: nowrap; color: var(--fg); }
+.tree-row.is-active { background: var(--selection); }
+.tree-arrow { width: 10px; font-size: 11px; color: var(--muted); text-align: center; }
+
+.ide-main { display: grid; grid-template-rows: var(--tabs-h) var(--crumbs-h) 1fr var(--panel-h); min-width: 0; min-height: 0; }
+.ide-tabs { display: flex; background: var(--tabs-bg); overflow: hidden; border-bottom: 1px solid var(--line); }
+.tab { display: flex; align-items: center; gap: 6px; padding: 0 10px 0 12px; min-width: 0; color: var(--muted); border-right: 1px solid var(--line); white-space: nowrap; }
+.tab.is-active { background: var(--bg); color: var(--fg); box-shadow: inset 0 var(--tab-accent-pos) 0 var(--accent); }
+.tab-close { width: 16px; text-align: center; opacity: .7; }
+.ide-crumbs { display: flex; align-items: center; padding: 0 14px; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; }
+
+.tab-icon { width: 14px; height: 14px; border-radius: 3px; flex: none; background: var(--muted); opacity: .85; }
+.tab-icon--java { background: #e76f00; }
+.tab-icon--ts { background: #3178c6; }
+.tab-icon--tsx { background: #61dafb; }
+.tab-icon--py { background: #f7c948; }
+.tab-icon--html { background: #e44d26; }
+.tab-icon--sql { background: #c06cd5; }
+.tab-icon--yml, .tab-icon--yaml { background: #cb171e; }
+.tab-icon--xml, .tab-icon--json, .tab-icon--toml { background: #a68a64; }
+.tab-icon--md { background: #519aba; }
+.tab-icon--dir { background: none; border: 2px solid var(--muted); border-radius: 2px; opacity: .6; }
+
+.ide-editor { overflow: hidden; padding: 4px 0 40px; background: var(--bg); font: var(--code-size)/var(--code-lh) Consolas, "JetBrains Mono", Menlo, monospace; }
+.ed-row { display: flex; white-space: pre; }
+.ed-row.is-current { background: var(--current-line); }
+.ed-num { width: 64px; flex: none; padding-right: 22px; text-align: right; color: var(--gutter); }
+.ed-row.is-current .ed-num { color: var(--gutter-active); }
+.ed-code { color: var(--tk-plain); }
+.caret { display: inline-block; width: 2px; height: 1.15em; margin: 0 -1px; vertical-align: text-bottom; background: var(--caret); animation: blink 1.06s steps(1) infinite; }
+.caret.is-typing { animation: none; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.tk-kw { color: var(--tk-kw); } .tk-type { color: var(--tk-type); } .tk-str { color: var(--tk-str); }
+.tk-num { color: var(--tk-num); } .tk-com { color: var(--tk-com); font-style: var(--com-style); } .tk-ann { color: var(--tk-ann); }
+.tk-fn { color: var(--tk-fn); } .tk-tag { color: var(--tk-tag); } .tk-attr { color: var(--tk-attr); } .tk-punc { color: var(--tk-punc); }
+
+.ide-panel { display: grid; grid-template-rows: 32px 1fr; min-height: 0; border-top: 1px solid var(--line); background: var(--panel-bg); }
+.panel-tabs { display: flex; align-items: center; gap: 18px; padding: 0 14px; font-size: 11px; color: var(--muted); }
+.ptab.is-active { color: var(--fg); box-shadow: 0 9px 0 -8px var(--accent); }
+.panel-body { overflow: hidden; padding: 4px 14px; font: 12.5px/1.45 Consolas, "JetBrains Mono", Menlo, monospace; }
+.panel-body[hidden] { display: none; }
+.term-line { white-space: pre; color: var(--term-fg); min-height: 1.45em; }
+.term-ps { color: var(--term-ps); }
+.term-cmd { color: var(--term-cmd); }
+.term-caret { display: inline-block; width: .6em; height: 1.1em; vertical-align: text-bottom; background: var(--caret); animation: blink 1.06s steps(1) infinite; }
+.term-ok { color: var(--term-ok); } .term-warn { color: var(--term-warn); } .term-dim { color: var(--muted); }
+
+.grid-info { padding: 2px 0 6px; color: var(--muted); font-size: 12px; }
+.grid-info.is-running { color: var(--term-ok); }
+.grid-wrap { overflow: hidden; }
+.grid { border-collapse: collapse; font-size: 12px; }
+.grid th, .grid td { padding: 2px 12px 2px 8px; border: 1px solid var(--line); text-align: left; white-space: nowrap; max-width: 520px; overflow: hidden; text-overflow: ellipsis; }
+.grid th { color: var(--fg); background: var(--tabs-bg); font-weight: 600; }
+.grid td { color: var(--term-fg); }
+.grid .grid-idx { color: var(--muted); text-align: right; }
+.grid .is-num { color: var(--tk-num); text-align: right; }
+.grid .is-null { color: var(--muted); font-style: italic; }
+
+.ide-status { display: flex; justify-content: space-between; align-items: center; padding-right: 8px; background: var(--status-bg); color: var(--status-fg); font-size: 12px; white-space: nowrap; overflow: hidden; }
+.st-left, .st-right { display: flex; align-items: center; gap: 14px; }
+.st-left { padding-left: 10px; }
