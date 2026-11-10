@@ -17,6 +17,17 @@ test('result shape is consistent', () => {
   }
 });
 
+test('first column values are unique within a result', () => {
+  for (let s = 1; s <= 100; s++) {
+    for (const d of ['postgres', 'oracle']) {
+      const q = generateQuery(createRng(s), d);
+      if (q.columns[0] === 'QUERY PLAN' || q.columns[0] === 'PLAN_TABLE_OUTPUT' || q.columns[0] === 'pid' || q.columns[0] === 'SID' || q.columns[0] === 'locktype' || q.columns[0] === 'OWNER') continue;
+      const firsts = q.rows.map((r) => r[0]);
+      assert.equal(new Set(firsts).size, firsts.length, q.sql);
+    }
+  }
+});
+
 test('queries vary', () => {
   const sqls = new Set();
   for (let s = 1; s <= 40; s++) sqls.add(generateQuery(createRng(s), 'postgres').sql);

@@ -88,3 +88,5 @@ body { font: 13px/1.4 "Segoe UI", system-ui, -apple-system, sans-serif; -webkit-
 .ide-status { display: flex; justify-content: space-between; align-items: center; padding-right: 8px; background: var(--status-bg); color: var(--status-fg); font-size: 12px; white-space: nowrap; overflow: hidden; }
 .st-left, .st-right { display: flex; align-items: center; gap: 14px; }
 .st-left { padding-left: 10px; }
+
+.fake-cursor { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; will-change: transform; filter: drop-shadow(0 1px 1px #0006); }

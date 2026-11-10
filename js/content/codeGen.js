@@ -15,8 +15,8 @@ export function pickLang(rng) {
   return 'html';
 }
 
-export function generateFile(rng, lang) {
-  const project = rng.pick(PROJECTS);
+// `project` should match the one shown in the IDE so packages and prefixes line up
+export function generateFile(rng, lang, project = rng.pick(PROJECTS)) {
   const gen = recentKinds.pickFresh(rng, GENERATORS[lang], (g) => g.name);
   const { dir, base, lines } = gen(rng, project);
   const name = base + EXT[lang];

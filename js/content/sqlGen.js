@@ -20,12 +20,12 @@ const POSTGRES = [
   },
   function indexes(rng) {
     const t = table(rng);
-    const cols = ['id', 'created_at', 'owner_id', 'status', 'expires_at', 'name'];
+    const cols = ['id', ...rng.shuffle(['created_at', 'owner_id', 'status', 'expires_at', 'name'])];
     return {
       sql: `SELECT indexname, indexdef\nFROM pg_indexes\nWHERE schemaname = 'public'\n  AND tablename = '${t}';`,
       columns: ['indexname', 'indexdef'],
       rows: rows(rng, 1, 5, (i) => {
-        const c = i === 0 ? 'id' : rng.pick(cols);
+        const c = cols[i];
         const name = i === 0 ? `${t}_pkey` : `idx_${t}_${c}`;
         return [name, `CREATE ${i === 0 ? 'UNIQUE ' : ''}INDEX ${name} ON public.${t} USING btree (${c})`];
       }),
@@ -114,7 +114,7 @@ const ORACLE = [
     return {
       sql: `SELECT index_name, table_name, uniqueness, status\nFROM user_indexes\nWHERE table_name = '${t}';`,
       columns: ['INDEX_NAME', 'TABLE_NAME', 'UNIQUENESS', 'STATUS'],
-      rows: rows(rng, 1, 4, (i) => [i === 0 ? `PK_${t}` : `IDX_${t}_${rng.pick(['OWNER', 'STATUS', 'CREATED', 'EXPIRES'])}`, t, i === 0 ? 'UNIQUE' : 'NONUNIQUE', 'VALID']),
+      rows: ((cols) => rows(rng, 1, 4, (i) => [i === 0 ? `PK_${t}` : `IDX_${t}_${cols[i - 1]}`, t, i === 0 ? 'UNIQUE' : 'NONUNIQUE', 'VALID']))(rng.shuffle(['OWNER', 'STATUS', 'CREATED', 'EXPIRES'])),
     };
   },
   function tabColumns(rng) {

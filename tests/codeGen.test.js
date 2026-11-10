@@ -54,6 +54,14 @@ test('size bounds fit the editor', () => {
   }
 });
 
+test('uses the given project name', () => {
+  for (let s = 1; s <= 30; s++) {
+    const java = generateFile(createRng(s), 'java', 'shared-lib');
+    assert.ok(java.content.startsWith('package com.example.sharedlib.'), java.content.split('\n')[0]);
+    assert.ok(java.path.includes('/sharedlib/'));
+  }
+});
+
 test('pickLang weights favour java', () => {
   const rng = createRng(1);
   const counts = {};
