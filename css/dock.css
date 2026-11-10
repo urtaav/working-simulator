@@ -1,1 +1,21 @@
-/* hidden dock: filled in by the dock task */
+/* Hidden dock: invisible until the real mouse touches the bottom edge (or Ctrl+Shift+.) */
+.dock {
+  position: fixed; left: 50%; bottom: 34px; z-index: 10000;
+  display: flex; align-items: center; gap: 14px; padding: 10px 14px;
+  transform: translate(-50%, 16px); opacity: 0; pointer-events: none;
+  background: #252526f2; color: #ddd; border: 1px solid #3c3c3c; border-radius: 10px;
+  box-shadow: 0 10px 30px #0008; font: 13px/1.2 "Segoe UI", system-ui, sans-serif;
+  transition: opacity .15s ease, transform .15s ease;
+}
+.dock.is-open { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+.dock-field { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.dock select, .dock-btn {
+  font: inherit; color: #eee; background: #3c3c3c; border: 1px solid #555; border-radius: 6px; padding: 4px 8px;
+}
+.dock select:focus-visible, .dock-btn:focus-visible { outline: 2px solid #0078d4; outline-offset: 1px; }
+.dock-btn { cursor: pointer; white-space: nowrap; }
+.dock-btn:hover { background: #4a4a4a; }
+.dock-status { color: #89d185; }
+.dock-status.is-warn { color: #f0b72f; }
+.dock-open .fake-cursor { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .dock { transition: none; } }

@@ -1,19 +1,21 @@
 import { createRng } from './core/rng.js';
-import { loadSettings, SCENES } from './core/settings.js';
+import { loadSettings, saveSettings, SCENES } from './core/settings.js';
+import { createWakeLock } from './core/wakeLock.js';
 import { PROJECTS, BRANCHES } from './content/vocab.js';
 import { createIde } from './ui/ide.js';
 import { createFakeCursor } from './ui/fakeCursor.js';
 import { setTabIdentity } from './ui/tabIdentity.js';
+import { createDock } from './ui/dock.js';
 import { createDirector } from './scenes/director.js';
 
 const params = new URLSearchParams(location.search);
-const settings = loadSettings();
+const state = loadSettings();
 const rng = createRng((Date.now() ^ (performance.now() * 1000)) >>> 0);
-const project = settings.project ?? rng.pick(PROJECTS);
+const project = state.project ?? rng.pick(PROJECTS);
 const branch = rng.pick(BRANCHES);
-const speed = Math.max(1, Number(params.get('speed')) || 1);
+const speed = Math.max(1, Number(params.get('speed')) || 1); // dev aid only
 
-const ide = createIde(document.getElementById('app'), { editor: settings.editor, project });
+const ide = createIde(document.getElementById('app'), { editor: state.editor, project });
 ide.setBranch(branch);
 
 document.documentElement.classList.add('fake-pointer');
@@ -26,7 +28,10 @@ const identity = (fileName) => {
 };
 identity(project);
 
-const state = { ...settings };
+const wakeLock = createWakeLock();
+wakeLock.request();
+
+let dock = null;
 const director = createDirector({
   ide,
   rng,
@@ -36,10 +41,25 @@ const director = createDirector({
   identity,
   speed,
   getRotation: () => state.rotateMinutes,
+  onSceneChange: (scene) => dock?.setScene(scene),
+});
+
+dock = createDock(document.getElementById('dock-root'), {
+  settings: state,
+  wakeLock,
+  onChange(next) {
+    const prev = { ...state };
+    Object.assign(state, next);
+    saveSettings(state);
+    if (next.editor !== prev.editor) {
+      ide.setSkin(next.editor);
+      setTabIdentity(next.editor, lastFile, project);
+      director.start(director.current()); // scenes lay out per editor, so restart the current one
+    }
+    if (next.scene !== prev.scene) director.start(next.scene);
+    if (next.rotateMinutes !== prev.rotateMinutes) director.setRotation();
+  },
 });
 
 const requested = params.get('scene');
-director.start(SCENES.includes(requested) ? requested : settings.scene);
-
-// exposed for the dock (wired in dock.js)
-export const app = { ide, director, state, identity: () => setTabIdentity(ide.skin(), lastFile, project) };
+director.start(SCENES.includes(requested) ? requested : state.scene);
