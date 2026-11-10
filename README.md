@@ -4,6 +4,16 @@ Página web estática que, vista de pasada, parece VS Code o IntelliJ en uso: es
 
 Todo el contenido es genérico (utils, DTOs, interfaces, helpers, consultas a catálogos de la base, logs técnicos). No muestra dashboards, CRUDs ni pantallas de negocio.
 
+## Por qué existe
+
+Doy mis estimaciones y cumplo mis tareas, y muchas veces termino antes. Ese tiempo que sobra lo uso para leer, investigar y probar herramientas nuevas, que al final también es parte de ser mejor desarrollador.
+
+El problema: para mi jefe eso se ve mal. Él quiere verme siempre escribiendo código, y lo entiendo, pero si el trabajo comprometido ya está hecho, no debería importar qué hago con el tiempo restante. Cuando pasa por mi lugar y ve un artículo o la documentación de una herramienta, parece que no estoy trabajando.
+
+Así que hice esta página: la dejo corriendo en un monitor mientras leo en el otro o en el celular, y desde lejos se ve lo que él espera ver: código, consultas, contenedores y la consola en movimiento.
+
+Si tienes el mismo problema, es para ti también.
+
 ## Uso
 
 1. Abre la página y ponla en pantalla completa (`F11` o el botón del dock).
